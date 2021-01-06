@@ -1,0 +1,19 @@
+name: Check commit message for skip CI
+description: >
+  Check the latest commit message for the substrings [ci skip] or [skip ci]
+  and set an output accordingly.
+outputs:
+  skip-ci:
+    description: Indicates if CI should be skipped.  String 'true' or 'false'.
+    value: ${{ contains(steps.message.outputs.message, '[ci skip]') || contains(steps.message.outputs.message, '[skip ci]') }}
+runs:
+  using: composite
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        fetch-depth: 1
+    - id: message
+      name: Get commit message
+      run: echo "::set-output name=message::$(git log -1 --format=%B)"
