@@ -3,7 +3,7 @@ description: >
   Check the latest commit message for the substrings [ci skip] or [skip ci]
   and set an output accordingly.
 outputs:
-  skip-ci:
+  skip:
     description: Indicates if CI should be skipped.  String 'true' or 'false'.
     value: ${{ contains(steps.message.outputs.message, '[ci skip]') || contains(steps.message.outputs.message, '[skip ci]') }}
 runs:
